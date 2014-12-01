@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pill Dispenser</title>
+
+    <link rel="stylesheet" href="/bower_components/foundation/css/normalize.css">
+    <link rel="stylesheet" href="/bower_components/foundation/css/foundation.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+</head>
+
+<body>
+
+<div class="row">
+    <div class="large-5 large-centered columns login-box">
+        <h4>Primero te tienes que identificar...</h4>
+
+        <form action="" class="panel radius" id="login-form">
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="email" placeholder="Correo electrónico" id="email-input" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="password" placeholder="Contraseña" id="password-input" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <button type="submit" class="button radius expand">Ingresar</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns text-center">
+                    o <a href="/sign-up.html">regístrate</a>.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/jquery.cookie/jquery.cookie.js"></script>
+<script>
+$(document).ready(function() {
+    var webServiceURL  = 'http://api.pilly.meridafest.com';
+    var $loginForm     = $('#login-form');
+    var $emailInput    = $('#email-input');
+    var $passwordInput = $('#password-input');
+
+    $loginForm.on('submit', function(event) {
+        event.preventDefault();
+
+        var email    = $emailInput.val();
+        var password = $passwordInput.val();
+
+        if (password.length < 6 || password.length > 50) {
+            alert('La contraseña debe tener una longitud entre 6 y 50 caracteres');
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: webServiceURL + '/oauth2/authorization?grant_type=client_credentials',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                email   : email,
+                password: password
+            })
+        })
+        .done(function(data) {
+            window.location = 'home.html';
+        })
+        .fail(function(response) {
+            console.log(response.responseJSON.error);
+            alert('Email y/o contraseña son incorrectos');
+        });
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "pill-dispenser-www",
+  "version": "0.1.0",
+  "description": "Web interface for pill dispenser web service",
+  "main": "server.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaastonsr/pill-dispenser-www.git"
+  },
+  "keywords": [
+    "react",
+    "javascript",
+    "gulp",
+    "browserify"
+  ],
+  "author": "Gastón Sánchez <gaastonsr@gmail.com> (http://gsanchez.co/)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/gaastonsr/pill-dispenser-www/issues"
+  },
+  "homepage": "https://github.com/gaastonsr/pill-dispenser-www",
+  "dependencies": {
+    "config": "^1.8.1",
+    "express": "~4.10.4",
+    "request": "~2.49.0"
+  },
+  "jshintConfig": {
+    "node": true
+  }
+}

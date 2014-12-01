@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pill Dispenser</title>
+
+    <link rel="stylesheet" href="/bower_components/foundation/css/normalize.css">
+    <link rel="stylesheet" href="/bower_components/foundation/css/foundation.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+</head>
+
+<body>
+
+<div class="row">
+    <div class="large-5 large-centered columns login-box">
+        <h4>Estamos felices de tenerte por aquí</h4>
+
+        <form action="" class="panel radius" id="sign-up-form">
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="text" id="full-name-input" placeholder="Nombre completo" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="email" id="email-input" placeholder="Correo electrónico" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="email" id="email-confirmation-input" placeholder="Confirma tu correo electrónico" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <input type="password" id="password-input" placeholder="Contraseña" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns">
+                    <button type="submit" class="button expand radius">Registrarse</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 large-centered columns text-center">
+                    o <a href="/login.html">ingresa</a>.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var webServiceURL           = 'http://api.pilly.meridafest.com';
+    var $signUpForm             = $('#sign-up-form');
+    var $fullNameInput          = $('#full-name-input');
+    var $emailInput             = $('#email-input');
+    var $emailConfirmationInput = $('#email-confirmation-input');
+    var $passwordInput          = $('#password-input');
+
+    $signUpForm.on('submit', function(event) {
+        event.preventDefault();
+
+        var fullName          = $fullNameInput.val();
+        var email             = $emailInput.val();
+        var emailConfirmation = $emailConfirmationInput.val();
+        var password          = $passwordInput.val();
+
+        if (fullName.length > 20) {
+            alert('El nombre no puede ser más largo de 20 caracteres');
+        }
+
+        if (password.length < 6 || password.length > 50) {
+            alert('La contraseña debe tener una longitud entre 6 y 50 caracteres');
+        }
+
+        if (email !== emailConfirmation) {
+            alert('Los correos no coinciden');
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: webServiceURL + '/users',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name             : fullName,
+                email            : email,
+                emailConfirmation: emailConfirmation,
+                password         : password
+            })
+        })
+        .done(function(data) {
+            $signUpForm[0].reset();
+            alert('Revisa tu correo, te debe llegar un email.');
+            window.location = 'login.html';
+        })
+        .fail(function(response) {
+            console.log(response.responseJSON.error);
+            alert(response.responseJSON.error.message);
+        });
+    });
+});
+</script>
+
+</body>
+</html>
